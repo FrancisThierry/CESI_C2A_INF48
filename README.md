@@ -18,3 +18,7 @@ Browse to http://localhost:3000 (on macOS and Windows browse to http://192.168.9
 ### Injection SQL
 https://www.owasp.org/index.php/SQL_Injection
 taper dans le login admin@juice-sh.op'-- et n'importe quoi dans le mot de passe
+
+### Burp Suite
+
+https://portswigger.net/burp/communitydownload
