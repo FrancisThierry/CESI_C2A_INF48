@@ -22,3 +22,10 @@ taper dans le login admin@juice-sh.op'-- et n'importe quoi dans le mot de passe
 ### Burp Suite
 
 https://portswigger.net/burp/communitydownload
+
+## Signature
+
+### dotnet 
+- créer une app ou utiliser une app existante
+
+dotnet new wpf -n MonAppDesktop   
