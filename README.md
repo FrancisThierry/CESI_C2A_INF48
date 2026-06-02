@@ -3,3 +3,6 @@ Cours et TD
 ## Ressources
 Juice Shop Owasp 
 https://owasp.org/www-project-juice-shop/
+
+### Database
+https://sqlitebrowser.org/
