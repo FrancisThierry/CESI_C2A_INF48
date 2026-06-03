@@ -61,6 +61,11 @@
             border-color: #667eea;
         }
 
+        /* Style optionnel : ajoute une bordure rouge fine si l'email saisi est invalide ET que l'utilisateur a fini de taper */
+        .input-group input:user-invalid {
+            border-color: #ff4d4d;
+        }
+
         .show-password {
             display: flex;
             align-items: center;
@@ -116,13 +121,13 @@
         <form id="loginForm" action="/login-endpoint" method="POST">
             
             <div class="input-group">
-                <label for="username">Identifiant ou Email</label>
-                <input type="text" id="username" name="username" required placeholder="Votre nom d'utilisateur">
+                <label for="username">Email</label>
+                <input type="email" id="username" name="username" required placeholder="exemple@domaine.com">
             </div>
 
             <div class="input-group">
                 <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="password" required placeholder="Votre mot de passe">
+                <input type="password" id="password" name="password" required minlength="4" placeholder="Votre mot de passe">
                 
                 <div class="show-password">
                     <input type="checkbox" id="togglePassword">
@@ -149,13 +154,6 @@
             } else {
                 passwordInput.type = 'password';
             }
-        });
-
-        // Intercepter la soumission pour l'exemple
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            // En production, supprime les lignes ci-dessous pour laisser le formulaire s'envoyer au serveur
-            // e.preventDefault(); 
-            // alert('Formulaire soumis ! (Identifiant: ' + document.getElementById('username').value + ')');
         });
     </script>
 
