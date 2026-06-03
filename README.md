@@ -202,8 +202,10 @@ End Module
 
 ```
 ## TD Avis Client.
-Ajouter sure la page de login un formulaire qui permet de donner un avis. Afficher sous le formulaire l'avis des visiteurs.
+Ajouter sur la page de login un formulaire qui permet de donner un avis. Afficher sous le formulaire l'avis des visiteurs.
 
-Critiquer le concept.
+1 - Critiquer le concept.
 
-Réaliser un attaque de type XSS avec ce formulaire.
+2 - Réaliser un attaque de type XSS avec ce formulaire.
+
+3 - Correction
