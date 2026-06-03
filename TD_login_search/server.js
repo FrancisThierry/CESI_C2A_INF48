@@ -75,6 +75,25 @@ app.post('/login-endpoint', async (req, res) => {
     }
 });
 
+app.post('/review', (req, res) => {
+    let { review } = req.body;
+    console.log(review)
+    const db = new sqlite3.Database('C:\\data\\CESI\\myCompany.db');
+    
+    //ajouter review à la table review dans la colonne entry    
+    try {
+        db.run("INSERT INTO review (entry) VALUES (?)", [review]);
+        res.status(200).send('ok')
+    } catch (error) {
+        console.error("Erreur serveur :", error);
+        res.status(500).send('<h1>Erreur interne du serveur.</h1>');
+        
+    }
+
+
+
+})
+
 // Lancement du serveur
 app.listen(PORT, () => {
     console.log(`Serveur démarré avec succès !`);

@@ -9,6 +9,6 @@ CREATE TABLE IF NOT EXISTS user (
 -- Insertion de trois utilisateurs de test
 -- Note : En production, les mots de passe doivent TOUJOURS être hachés (ex: avec bcrypt)
 INSERT INTO user (username, password) VALUES 
-('admin', 'secret'),
-('alice', 'alice2026'),
-('bob', 'password123');
+('admin@domain.org', 'secret'),
+('alice@domain.org', 'alice2026'),
+('bob@domain.org', 'password123');

