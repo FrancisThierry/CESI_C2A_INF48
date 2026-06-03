@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 24px;
+            color: #333333;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666666;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #667eea;
+        }
+
+        .show-password {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 14px;
+            color: #666666;
+            cursor: pointer;
+        }
+
+        .show-password input {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #5a6fd6;
+        }
+
+        .footer-links {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .footer-links a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Se connecter</h2>
+        
+        <form id="loginForm" action="/login-endpoint" method="POST">
+            
+            <div class="input-group">
+                <label for="username">Identifiant ou Email</label>
+                <input type="text" id="username" name="username" required placeholder="Votre nom d'utilisateur">
+            </div>
+
+            <div class="input-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" required placeholder="Votre mot de passe">
+                
+                <div class="show-password">
+                    <input type="checkbox" id="togglePassword">
+                    <label for="togglePassword">Afficher le mot de passe</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Connexion</button>
+        </form>
+
+        <div class="footer-links">
+            <a href="#">Mot de passe oublié ?</a>
+        </div>
+    </div>
+
+    <script>
+        // Script pour afficher/masquer le mot de passe
+        const passwordInput = document.getElementById('password');
+        const togglePasswordCheckbox = document.getElementById('togglePassword');
+
+        togglePasswordCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        });
+
+        // Intercepter la soumission pour l'exemple
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            // En production, supprime les lignes ci-dessous pour laisser le formulaire s'envoyer au serveur
+            e.preventDefault(); 
+            alert('Formulaire soumis ! (Identifiant: ' + document.getElementById('username').value + ')');
+        });
+    </script>
+
+</body>
+</html>

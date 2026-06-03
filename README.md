@@ -33,3 +33,11 @@ dotnet new wpf -n MonAppDesktop
 - Se rendre dans le répertoire de l'exe
 - lancer la commande : $cert = New-SelfSignedCertificate -Type CodeSigning -Subject "CN=MonCertificatTD" -CertStoreLocation "Cert:\CurrentUser\My"
 - lancer la commande : Set-AuthenticodeSignature -FilePath ".\MonAppDesktop.exe" -Certificate $cert  
+
+
+## TD : Remediation
+
+Dans le language que vous connaissez développer un accès simple login / mot de passe avec une base de données et un moteur de recherche.
+
+Sqlite est une base qui peut être utilisé.
+
