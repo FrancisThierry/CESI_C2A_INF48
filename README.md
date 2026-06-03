@@ -319,7 +319,7 @@ const safeReview = escapeHTML(req.body.review);
 En appliquant ces corrections, les outils **SAST** ne verront plus de chemin non sécurisé entre l'entrée et la sortie, et les outils **DAST** verront leurs payloads s'afficher inoffensivement sous forme de texte à l'écran (`<script>` s'affichera mot pour mot au lieu de s'exécuter).
 
 ## TD Oauth
-Ajouter sur la page de login un formulaire qui permet de donner un avis. Afficher sous le formulaire l'avis des visiteurs.
+Ajouter sur la page une authentification via Oauth.
 
 Avant de développer mettre en place une analyse de risques et des mesures de protection.
 
