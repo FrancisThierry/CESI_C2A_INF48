@@ -11,8 +11,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "passport": "^0.7.0",
+    "passport-github2": "^0.1.12",
     "sqlite": "^5.1.1",
     "sqlite3": "^6.0.1"
   }
