@@ -2,9 +2,23 @@ const express = require('express');
 const path = require('path');
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite'); // <-- CORRECTION : Import de 'open' nécessaire pour utiliser await open()
+const passport = require('passport');
 
 const app = express();
 const PORT = 3001;
+
+//définir la statégie passport avec github
+passport.use('github', require('./githubStrategy'));
+
+//initialiser passport
+app.use(passport.initialize());
+
+//initialiser session
+app.use(require('express-session')({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false
+}));
 
 // Middleware pour pouvoir lire les données envoyées par le formulaire HTML (POST)
 app.use(express.urlencoded({ extended: true }));
@@ -74,6 +88,11 @@ app.post('/login-endpoint', async (req, res) => {
         res.status(500).send('<h1>Erreur interne du serveur.</h1>');
     }
 });
+
+//accès par github
+app.get('auth/github', (req, res) => {
+    
+}
 
 app.post('/review', (req, res) => {
     let { review } = req.body;

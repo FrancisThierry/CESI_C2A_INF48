@@ -324,3 +324,37 @@ Ajouter sur la page une authentification via Oauth.
 Avant de développer mettre en place une analyse de risques et des mesures de protection.
 
 On peut proposer une authentification via Oauth (google, facebook, github, twitter, linkedin, etc.) et expliquer les avantages et les risques de cette solution.
+
+## Analyse de risques et des mesures de protection
+
+### Le use case : Ajouter une authentification via Oauth
+
+**Risques :**
+
+- **Risque 1 :** Le client n'a pas le droit de choisir son fournisseur d'authentification.
+- **Risque 2 :** Le client veut peut-être s'inscrire avec une authentification existante.
+- **Risque 3 :** Le tiers peut être innacessible.
+
+**Mesures de protection :**
+
+- **Mesure 1 :** Limitation du choix des fournisseurs d'authentification.
+- **Mesure 2 :** Limitation de l'inscription avec des fournisseurs d'authentification existants.
+- **Mesure 3 :** Limitation de l'accessibilité des tiers.
+- **Mesure 4 :** Prise en compte du coût de l'authentification.
+- **Mesure 5 :** Prise en compte de la souveraineté de l'authentification en rapport avec la situation internationale.
+
+### Aspect technique
+### Test Pilote : Ajouter une authentification via Oauth
+#### Fonctionalité ouverte à une population (10 à 20 utilisateurs)
+- Limite à 10 à 20 utilisateurs
+- Augmentation du nombre d'utilisateurs en foction de la réussite du test pilote
+-Choix du fournisseur d'authentification GitHub en priorité pour la facilité de mise en place
+- Mise en place de log spécifique pour la phase de pilotage
+- Mise en place de log spécifique pour la phase de production
+### Coté front end
+- Mise en place de l'authentification via Oauth avec GitHub
+- Utilisation d'un lien se connecter seulement
+### Coté back end
+- Mise en place de l'authentification via Oauth avec GitHub
+- gestion des jetons d'authentification en utilisant une librairie de gestion de jetons reconnue et recommandée par GitHub
+- Suivre particulièrement les cookies de session et les jetons d'authentification en s'assurant qu'ils soient bien httpOnly et secure et Samesite
