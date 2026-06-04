@@ -92,7 +92,7 @@ app.post('/login-endpoint', async (req, res) => {
 //accès par github
 app.get('auth/github', (req, res) => {
     
-}
+});
 
 app.post('/review', (req, res) => {
     let { review } = req.body;
